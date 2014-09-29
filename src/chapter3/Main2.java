@@ -2,11 +2,11 @@ package chapter3;
 /**
  * 
  * <p>
- * Description: 信号量Semaphores的学习
+ * Description: CountDownLatch的学习
  * </p>
  * @author zhangjunshuai
  * @version 1.0
- * Create Date: 2014-9-25 下午8:12:37
+ * Create Date: 2014-9-25 下午8:11:55
  * Project Name: Java7Thread
  *
  * <pre>
@@ -17,25 +17,23 @@ package chapter3;
  * </pre>
  *
  */
-
-public class Main {
+public class Main2 {
 
 	/**
 	 * <p>
 	 * </p>
 	 * @author zhangjunshuai
-	 * @date 2014-9-23 下午8:45:31
+	 * @date 2014-9-25 下午8:11:50
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PrintQueue2 printQueue = new PrintQueue2();
-		Thread thread[] = new Thread[10];
+		Videoconference conference = new Videoconference(9);
+		Thread threadConference = new Thread(conference);
+		threadConference.start();
 		for(int i=0;i<10;i++){
-			thread[i] = new Thread(new Job(printQueue),"Thread"+i);
-		}
-
-		for(int i=0;i<10;i++){
-			thread[i].start();
+			Participant p = new Participant(conference, "Participant"+i);
+			Thread t = new Thread(p);
+			t.start();
 		}
 	}
 
