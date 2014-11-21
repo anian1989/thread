@@ -1,4 +1,7 @@
 package SE;
+
+import java.util.Random;
+
 /**
  * <p>
  * Description: 此方法是对匿名数组和不规则数组的学习
@@ -26,58 +29,51 @@ public class Array {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		//1、匿名数组的使用
 		out1(new String[]{"1","2"});
 		out2("3","4");
-		
-		
-		//创建和打印不规则二维数组  
-        int arr[ ][ ];  
-          
-        arr=new int[3][];//现在说明为不规则数组  
-          
-        arr[0]=new int[10];//arr[0]指向另一个一位数组  
-        arr[1]=new int[3];  
-        arr[2]=new int[4];  
-          
-        //赋值  
-        for(int i=0;i<arr.length;i++){  
-              
-            for(int j=0;j<arr[i].length;j++){  
+       //2、不规则数组的使用   
+        irregular();
+	}
+
+	/*
+	 * 不规则数组
+	 */
+	static void irregular(){
+		int arrays[][];
+		arrays =  new int[3][];
+		for(int i=0;i<arrays.length;i++){
+			/*Random r = new Random(47);
+			int h =   r.nextInt(13);*/
+			int h =   (int)(Math.random()*16);
+			arrays[i] = new int[h];
+			for(int j=0;j<h;j++){
+				int w =  (int)(Math.random()*100);
+				arrays[i][j] = w;
+			}
+		}
+		//遍历输出
+		for(int i=0;i<arrays.length;i++){  
+            
+            for(int j=0;j<arrays[i].length;j++){  
                   
-                arr[i][j]=j;  
-            }  
-              
-        }  
-          
-        //输出  
-        for(int i=0;i<arr.length;i++){  
-              
-            for(int j=0;j<arr[i].length;j++){  
-                  
-                System.out.print(arr[i][j]+" ");  
+                System.out.print(arrays[i][j]+" ");  
             }  
             System.out.println();  
         }  
-          
-        /*输出结果： 
-        0 1 2 3 4 5 6 7 8 9  
-        0 1 2  
-        0 1 2 3  
-        *///  
-		
-	}
-
-	static void out1(String[] ss){
-		for (String string : ss) {
-			System.out.println(string);
-		}
 	}
 	
+	static void out1(String[] ss){
+		for (String string : ss) {
+			System.out.print(string);
+		}
+		System.out.println();
+	}
 	static void out2(String... ss){
 		for (String str : ss) {
-			System.out.println(str);
+			System.out.print(str);
 		}
+		System.out.println();
 	}
+	
 }
