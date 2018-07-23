@@ -1,18 +1,17 @@
 package guava;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimaps;
 import com.google.common.collect.Ordering;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class OrderingTest {
     private final static Logger logger = LoggerFactory.getLogger(OrderingTest.class);
@@ -94,5 +93,52 @@ public class OrderingTest {
         Collections.sort(namesListList, lexOrd);
 
         System.out.println(Joiner.on(',').join(namesListList));
+    }
+
+    @Test
+    public void onResultOfTest(){
+        /**
+         * onResult是对使用返回对象的compare方法进行比较
+         */
+        Function<Object, String> toSimpleClassName = new Function<Object, String>() {
+            @Override
+            public String apply(Object obj) {
+                return obj.getClass().getSimpleName();
+            }
+        };
+
+        Ordering<Object> bySimpleClassName = Ordering.natural().onResultOf(toSimpleClassName);
+
+
+        System.out.println(bySimpleClassName.sortedCopy(
+                                ImmutableList.of("foo", 42, 'x', "bar", 666)
+                        )
+        ); // [x, 42, 666, foo, bar]
+
+        System.out.println(
+                bySimpleClassName.reverse().compound(Ordering.natural())
+                        .sortedCopy(
+                                ImmutableList.of(3, 'y', true, "foo", 'z', 1, 'x', "bar", 2, false)
+                        )
+        );
+
+    }
+    @Test
+    public void greatedOfTest(){
+        ArrayList<Integer> list = Lists.newArrayList();
+        for (int i = 1; i < 30; i++) {
+            Random random = new Random();
+            list.add(random.nextInt(i*10));
+        }
+        List<Integer> integers = new Ordering<Integer>() {
+
+            @Override
+            public int compare(Integer left, Integer right) {
+                return right < left ? 1 : -1;
+            }
+        }.greatestOf(list, 10);
+        logger.info("list:{}",JSON.toJSONString(list));
+        logger.info("sublist:{}",JSON.toJSONString(integers));
+
     }
 }
