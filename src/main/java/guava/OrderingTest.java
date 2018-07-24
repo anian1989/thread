@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Ordering;
+import com.google.common.util.concurrent.Service;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,4 +142,37 @@ public class OrderingTest {
         logger.info("sublist:{}",JSON.toJSONString(integers));
 
     }
+
+    /**
+     * explicit是指定比较的范围以及顺序，被比较的数据要在此范围内
+     */
+    @Test
+    public void explicitTest(){
+        ArrayList<Integer> list = Lists.newArrayList();
+        for (int i = 1; i < 10; i++) {
+
+            list.add(i);
+        }
+        logger.info("list:{}",JSON.toJSONString(list));
+        List<Integer> integers = Ordering.explicit(1, 3, 2,4,6,5,9,8,7,10).sortedCopy(list);
+
+        logger.info("sublist:{}",JSON.toJSONString(integers));
+
+    }
+
+    /*@Test
+    public void explicit_order_or_order_enum() {
+
+        // Order states, an enum, in an explicit order
+        Ordering<Service.State> byMidwestState = Ordering.explicit(State.Illinois,
+                State.Indiana, State.Iowa, State.Michigan, State.Minnesota,
+                State.Ohio, State.Wisconsin);
+
+        List<State> states = Lists.newArrayList(State.Iowa, State.Indiana,
+                State.Wisconsin, State.Minnesota, State.Ohio, State.Illinois);
+
+        Collections.sort(states, byMidwestState);
+
+        System.out.println(states);
+    }*/
 }
