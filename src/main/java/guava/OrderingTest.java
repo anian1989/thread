@@ -153,6 +153,7 @@ public class OrderingTest {
 
             list.add(i);
         }
+
         logger.info("list:{}",JSON.toJSONString(list));
         List<Integer> integers = Ordering.explicit(1, 3, 2,4,6,5,9,8,7,10).sortedCopy(list);
 
