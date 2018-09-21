@@ -15,6 +15,11 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 public class OrderingTest {
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(OrderingTest.class);
 
     public static  void main(String[] args){
