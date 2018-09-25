@@ -5,10 +5,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -176,5 +174,34 @@ public class LambdaTest {
         System.out.println("---Sorting using Comparator by Age with reverse order---");
         slist = list.stream().sorted(Comparator.comparing(Student::getAge).reversed()).collect(Collectors.toList());
         slist.forEach(e -> System.out.println("Id:"+ e.getId()+", Name: "+e.getName()+", Age:"+e.getAge()));
+    }
+
+    @Test
+    public void collectionTest(){
+        Stream<Integer> integerStream = Stream.of(5, 6, 3, 2, 1, 4);
+        integerStream.sorted().forEach(System.out::println);
+        Stream<String> stringStream = Stream.of("a", "bb", "cc", "dddd", "eeeee", "ffffff");
+        Optional<String> max = stringStream.max((s1, s2) -> s1.length() - s2.length());
+        logger.info("max:{}",max.get());
+    }
+
+    @Test
+    public void shortCircuiting(){
+        Supplier<Stream<Integer>> streamSupplier
+                = () ->Stream.of(4, 3, 2, -1);
+        boolean b = streamSupplier.get().allMatch(kk -> kk > 0);
+        logger.info("allMatch:{}",b);
+        //如果直接使用integerStream=Stream.of(4, 3, 2, -1)的方式定义Stream，则会报错stream has already been operated upon or closed
+        boolean b1 = streamSupplier.get().anyMatch(kk -> 0 > kk);
+        logger.info("anyMatch:{}",b1);
+
+        Optional<Integer> any = streamSupplier.get().filter(kk-> kk>0).findAny();
+        logger.info("findAny:{}",any.orElse(0));
+
+        Stream<Integer> limit = streamSupplier.get().filter(kk -> kk > 0).sorted().limit(3);
+        limit.forEach(kk-> logger.info("limit:{}",kk));
+
+
+
     }
 }
